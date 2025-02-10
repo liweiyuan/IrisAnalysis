@@ -26,6 +26,12 @@ pip install -r requirements.txt
 python src/main.py
 ```
 
+## 格式化项目
+在项目根目录下运行以下命令以格式化代码：
+```bash
+black src/
+```
+
 ## 鸢尾花数据集
 
 鸢尾花数据集包含150条记录，每条记录包含以下四个特征：
