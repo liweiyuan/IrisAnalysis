@@ -43,3 +43,4 @@ env/
 # 测试覆盖率
 .coverage
 htmlcov/
+.pytest_cache/

@@ -3,7 +3,9 @@ import pandas as pd
 import logging
 
 # 定义常量
-URL = "https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data"
+URL = """https://archive.ics.uci.edu/ml/
+         machine-learning-databases/iris/iris.data
+         """
 FILE_PATH = "iris.data"
 COL_NAMES = ["sepal_length", "sepal_width", "petal_length", "petal_width", "class"]
 

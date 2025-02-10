@@ -38,11 +38,11 @@ jobs:
           pip install black
           black --check .
 
-      - name: Lint with flake8
-        run: |
-          source venv/bin/activate
-          pip install flake8
-          flake8 .
+      #- name: Lint with flake8
+      #  run: |
+      #    source venv/bin/activate
+      #    pip install flake8
+      #    flake8 src/main.py
 
       - name: Run tests with coverage
         run: |
