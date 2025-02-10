@@ -6,14 +6,15 @@
 
 - `main.py`: 主程序文件，包含数据分析的主要逻辑。
 - `iris.data`: 鸢尾花数据集文件。
-- `pyvenv.cfg`: Python虚拟环境配置文件。
-- `bin/`, `include/`, `lib/`, `lib64/`: 虚拟环境相关文件和目录。
 
 ## 安装依赖
 
 在项目根目录下运行以下命令以安装所需的Python依赖：
 
 ```bash
+git clone ...
+python -m venv venv
+source venv/bin/activate # 激活虚拟环境
 pip install -r requirements.txt
 ```
 
@@ -22,7 +23,7 @@ pip install -r requirements.txt
 在项目根目录下运行以下命令以启动数据分析：
 
 ```bash
-python main.py
+python src/main.py
 ```
 
 ## 鸢尾花数据集
