@@ -1,55 +1,64 @@
 import requests
 import pandas as pd
+import logging
 
-# 定义数据集的URL
-url = 'https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data'
+def fetch_data(url, file_path):
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        with open(file_path, 'w') as f:
+            f.write(response.text)
+        logging.info("数据获取成功并保存到文件。")
+    except requests.RequestException as e:
+        logging.error(f"请求失败: {e}")
+        return False
+    return True
 
-# 通过requests获取数据
-# requests.get()方法返回一个Response对象
-response = requests.get(url)
+def load_data(file_path, col_names):
+    try:
+        data = pd.read_csv(file_path, header=None, names=col_names)
+        logging.info("数据加载成功。")
+        return data
+    except Exception as e:
+        logging.error(f"数据加载失败: {e}")
+        return None
 
-# 检查请求是否成功
-if response.status_code == 200:
-    # 将数据写入文件
-    with open('iris.data', 'w') as f:
-        f.write(response.text)
-
-    # 读取数据
-    # 使用pandas的read_csv()方法读取数据
-    # 定义列名
-    col_names = ['sepal_length', 'sepal_width', 'petal_length', 'petal_width', 'class']
-    data = pd.read_csv('iris.data', header=None, names=col_names)
-
-    # 数据的基本信息
-    print("数据基本信息：")
-    print(data.info())
-
-    # 查看数据集行数和列数
-    rows, columns = data.shape
-
-    if rows > 0 and columns > 0:
-        # 数据清洗：处理缺失值
-        if data.isnull().values.any():
-            data = data.dropna()  # 删除包含缺失值的行
-            print("已处理缺失值。")
-        else:
-            print("数据中没有缺失值。")
-
-        # 数据探索：查看数据集行数和列数
-        rows, columns = data.shape
-        print(f"数据集共有 {rows} 行，{columns} 列")
-
-        # 查看数据集行数和列数
-        print("数据前几行信息：")
-        print(data.head().to_csv(sep='\t', na_rep='nan'))
-
-        # 数据计算：计算数值列的基本统计信息
-        numerical_columns = data.select_dtypes(include=['number'])
-        statistics = numerical_columns.describe()
-        print("数值列的基本统计信息：")
-        print(statistics)
+def clean_data(data):
+    if data.isnull().values.any():
+        data = data.dropna()
+        logging.info("已处理缺失值。")
     else:
-        print("数据集中没有数据。")
+        logging.info("数据中没有缺失值。")
+    return data
 
-else:
-    print(f"请求失败，状态码：{response.status_code}")
+def explore_data(data):
+    logging.info("数据基本信息：")
+    logging.info(data.info())
+    rows, columns = data.shape
+    logging.info(f"数据集共有 {rows} 行，{columns} 列")
+    logging.info("数据前几行信息：")
+    logging.info(data.head().to_csv(sep='\t', na_rep='nan'))
+    return data
+
+def calculate_statistics(data):
+    numerical_columns = data.select_dtypes(include=['number'])
+    statistics = numerical_columns.describe()
+    logging.info("数值列的基本统计信息：")
+    logging.info(statistics)
+    return statistics
+
+def main():
+    logging.basicConfig(level=logging.INFO)
+    url = 'https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data'
+    file_path = 'iris.data'
+    col_names = ['sepal_length', 'sepal_width', 'petal_length', 'petal_width', 'class']
+
+    if fetch_data(url, file_path):
+        data = load_data(file_path, col_names)
+        if data is not None:
+            data = clean_data(data)
+            data = explore_data(data)
+            calculate_statistics(data)
+
+if __name__ == "__main__":
+    main()
